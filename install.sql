@@ -36,9 +36,8 @@ CREATE TABLE public.tblcustomer (
   customerid bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
   username text NOT NULL,
   email text,
-  auth_user_id uuid UNIQUE,
-  CONSTRAINT tblcustomer_pkey PRIMARY KEY (customerid),
-  CONSTRAINT tblcustomer_auth_user_id_fkey FOREIGN KEY (auth_user_id) REFERENCES auth.users(id)
+  clerk_user_id text,
+  CONSTRAINT tblcustomer_pkey PRIMARY KEY (customerid)
 );
 CREATE TABLE public.tbladdress (
   addressid bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
@@ -47,9 +46,8 @@ CREATE TABLE public.tbladdress (
   city text NOT NULL,
   postalcode text,
   country text NOT NULL,
-  created_by uuid NOT NULL,
-  CONSTRAINT tbladdress_pkey PRIMARY KEY (addressid),
-  CONSTRAINT tbladdress_created_by_fkey FOREIGN KEY (created_by) REFERENCES auth.users(id)
+  created_by text NOT NULL DEFAULT (auth.jwt() ->> 'sub'::text),
+  CONSTRAINT tbladdress_pkey PRIMARY KEY (addressid)
 );
 CREATE TABLE public.tblcustomeraddress (
   customerid bigint NOT NULL,
@@ -89,4 +87,42 @@ CREATE TABLE public.tblcartitem (
   CONSTRAINT tblcartitem_pkey PRIMARY KEY (cartid, itemid),
   CONSTRAINT tblcartitem_cartid_fkey FOREIGN KEY (cartid) REFERENCES public.tblcart(cartid),
   CONSTRAINT tblcartitem_itemid_fkey FOREIGN KEY (itemid) REFERENCES public.tblitem(itemid)
+);
+CREATE TABLE public.tbluser_roles (
+  clerk_user_id text NOT NULL,
+  role text NOT NULL DEFAULT 'regular_user'::text CHECK (role = ANY (ARRAY['regular_user'::text, 'event_admin'::text, 'store_event_admin'::text])),
+  assigned_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT tbluser_roles_pkey PRIMARY KEY (clerk_user_id)
+);
+CREATE TABLE public.tblevents (
+  event_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+  name text NOT NULL CHECK (length(TRIM(BOTH FROM name)) > 0),
+  event_date date,
+  description text,
+  created_by text NOT NULL DEFAULT (auth.jwt() ->> 'sub'::text),
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT tblevents_pkey PRIMARY KEY (event_id)
+);
+CREATE TABLE public.tblevent_posts (
+  post_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+  event_id bigint NOT NULL,
+  title text NOT NULL CHECK (length(TRIM(BOTH FROM title)) > 0),
+  body text,
+  created_by text NOT NULL DEFAULT (auth.jwt() ->> 'sub'::text),
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_by text NOT NULL DEFAULT (auth.jwt() ->> 'sub'::text),
+  CONSTRAINT tblevent_posts_pkey PRIMARY KEY (post_id),
+  CONSTRAINT event_posts_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.tblevents(event_id)
+);
+CREATE TABLE public.tblevent_images (
+  image_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+  post_id bigint NOT NULL,
+  storage_path text NOT NULL UNIQUE,
+  caption text,
+  sort_order integer NOT NULL DEFAULT 0,
+  created_by text NOT NULL DEFAULT (auth.jwt() ->> 'sub'::text),
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT tblevent_images_pkey PRIMARY KEY (image_id),
+  CONSTRAINT event_images_post_id_fkey FOREIGN KEY (post_id) REFERENCES public.tblevent_posts(post_id)
 );
