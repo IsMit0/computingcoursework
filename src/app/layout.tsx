@@ -10,6 +10,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
+import Link from 'next/link'
 
 
 const geistSans = Geist({
@@ -40,17 +41,31 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="p-4">
         <div className="bg-secondary h-20 rounded-md">
           <div className="grid grid-cols-5 gap-3 items-center">
-            <div className="col-start-2 col-span-2">
+            <div className="col-start-1 p-4">
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <NavigationMenuLink>Link</NavigationMenuLink>
-                    </NavigationMenuContent>
+                    <NavigationMenuLink render={<Link href='homepage' />}>Home Page</NavigationMenuLink>
                   </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
+            </div>
+            <div className="col-start-2 col-span-3">
+              <NavigationMenu>
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink render={<Link href='admindashboard' />}>Test 1 erton</NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink render={<Link href='' />}>Testerton 2
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink render={<Link href='' />}>Testyly 3</NavigationMenuLink>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+
             </div>
             <div className="col-start-5">
               <ClerkProvider>
@@ -85,22 +100,3 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 
   );
 }
-
-<ClerkProvider>
-  <header className="">
-
-    <Show when="signed-out">
-      <SignInButton />
-      <SignUpButton>
-        <button className="bg-purple-700 text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
-          Sign Up
-        </button>
-      </SignUpButton>
-    </Show>
-
-    <Show when="signed-in">
-      <UserButton />
-    </Show>
-
-  </header>
-</ClerkProvider>
