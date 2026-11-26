@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -24,55 +23,61 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Vinovia",
-  description: "Developed by Polygon",
+  description: "Vinovia Minecraft Community",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
+const navigationLinks = [
+  { label: "Home", href: "/homepage" },
+  { label: "Events", href: "/events" },
+  { label: "Gallery", href: "/homepage" },
+  { label: "Admin Dashboard", href: "/admindashboard" },
+];
+
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="p-4">
-        <div className="h-20 rounded-md bg-secondary">
-          <div className="grid grid-cols-5 items-center gap-3">
-            <div className="col-start-1 p-4">
-              <NavigationMenu>
-                <NavigationMenuList>
-                  <NavigationMenuItem>
-                    <NavigationMenuLink
-                      render={<Link href="/homepage" />}
-                    >
-                      Home Page
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
-            </div>
+      <body className="min-h-full bg-background text-foreground">
+        <header className="border-b-2 border-border bg-secondary">
+          <div className="mx-auto flex min-h-20 max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-4">
+            <Link
+              href="/homepage"
+              className="text-2xl font-bold tracking-tight"
+            >
+              Vinovia
+            </Link>
 
-            <div className="col-start-2 col-span-3">
-              <NavigationMenu>
-                <NavigationMenuList>
-                  <NavigationMenuItem>
+            <NavigationMenu>
+              <NavigationMenuList className="flex flex-wrap items-center gap-2">
+                {navigationLinks.map((link) => (
+                  <NavigationMenuItem key={link.href + link.label}>
                     <NavigationMenuLink
-                      render={<Link href="/admindashboard" />}
+                      render={<Link href={link.href} />}
+                      className="rounded-md px-3 py-2 font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
                     >
-                      Admin Dashboard
+                      {link.label}
                     </NavigationMenuLink>
                   </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
-            </div>
+                ))}
+              </NavigationMenuList>
+            </NavigationMenu>
           </div>
-        </div>
+        </header>
 
-        <main className="pt-16">
+        <main className="mx-auto min-h-[calc(100vh-5rem)] w-full max-w-7xl px-4 py-8 sm:px-6">
           {children}
         </main>
+
+        <footer className="border-t-2 border-border bg-secondary">
+          <div className="mx-auto max-w-7xl px-6 py-6 text-center text-sm">
+            <p className="font-semibold">Vinovia</p>
+            <p className="mt-1 opacity-75">
+              A Minecraft community built together.
+            </p>
+          </div>
+        </footer>
       </body>
     </html>
   );
