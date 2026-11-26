@@ -146,7 +146,7 @@ export default function NavigationBar() {
         {/* Moving indicator */}
         {pathname === "/homepage" && indicator.width > 0 && (
           <div
-            className="pointer-events-none absolute bottom-0 h-3px rounded-full bg-secondary transition-all duration-300"
+            className="pointer-events-none absolute bottom-0 h-[3px] rounded-full bg-secondary transition-all duration-300"
             style={{
               left: indicator.left,
               width: indicator.width,

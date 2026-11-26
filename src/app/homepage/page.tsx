@@ -12,7 +12,7 @@ export default async function Homepage() {
       {/* Hero section */}
       <section
         id="home"
-        className="relative flex min-h-420px items-center justify-center overflow-hidden rounded-2xl border-2 border-border bg-secondary sm:min-h-520px"
+        className="relative flex min-h-[420px] items-center justify-center overflow-hidden rounded-2xl border-2 border-border bg-secondary sm:min-h-[520px]"
       >
         {heroImage && (
           <Image
