@@ -141,3 +141,66 @@ export async function getPost(
             })),
     };
 }
+
+export async function getGalleryImages() {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .from("tblevents")
+        .select(`
+            event_id,
+            name,
+            event_date,
+            description,
+            tblevent_posts (
+                post_id,
+                title,
+                body,
+                tblevent_images (
+                    image_id,
+                    storage_path,
+                    caption,
+                    sort_order,
+                    created_at
+                )
+            )
+        `)
+        .order("event_date", { ascending: false });
+
+    if (error) {
+        console.error("Error fetching gallery images:", error);
+        throw new Error("Could not load gallery images");
+    }
+
+    return (data ?? []).flatMap((event) =>
+        (event.tblevent_posts ?? []).flatMap((post) =>
+            (post.tblevent_images ?? []).map((image) => ({
+                image_id: image.image_id,
+                caption: image.caption,
+                sort_order: image.sort_order,
+                created_at: image.created_at,
+
+                url: supabase.storage
+                    .from("images")
+                    .getPublicUrl(image.storage_path).data.publicUrl,
+
+                post: {
+                    post_id: post.post_id,
+                    title: post.title,
+                    body: post.body,
+                },
+
+                event: {
+                    event_id: event.event_id,
+                    name: event.name,
+                    event_date: event.event_date,
+                    description: event.description,
+                },
+            }))
+        )
+    ).sort(
+        (a, b) =>
+            new Date(b.created_at).getTime() -
+            new Date(a.created_at).getTime()
+    );
+}

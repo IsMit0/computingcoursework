@@ -2,7 +2,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getPost } from "@/lib/events";
-import PostGallery from "../../../../components/events/PostGallery";
+import PostGallery from "@/components/events/PostGallery";
 
 type Props = {
     params: Promise<{
