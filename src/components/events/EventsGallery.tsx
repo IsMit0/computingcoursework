@@ -328,7 +328,7 @@ export default function EventsGallery({
                         role="dialog"
                         aria-modal="true"
                         aria-labelledby="gallery-dialog-title"
-                        className="relative flex max-h-[90vh] w-[90vw] max-w-[900px] flex-col overflow-hidden rounded-3xl bg-white shadow-2xl transition-transform duration-500 ease-out"
+                        className="relative flex max-h-[90vh] w-[90vw] max-w-900px flex-col overflow-hidden rounded-3xl bg-white shadow-2xl transition-transform duration-500 ease-out"
                         style={{
                             transform: expanded
                                 ? "scale(1)"
