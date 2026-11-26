@@ -42,13 +42,6 @@ export default async function Homepage() {
             A community built around creativity, adventure and the memories we
             make together.
           </p>
-
-          <Link
-            href="#gallery"
-            className="mt-8 inline-flex rounded-lg border-2 border-white/70 bg-secondary px-7 py-3 font-semibold text-foreground shadow-lg transition hover:-translate-y-1 hover:bg-primary"
-          >
-            Explore Our Gallery →
-          </Link>
         </div>
       </section>
 
