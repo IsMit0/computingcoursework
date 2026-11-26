@@ -1,32 +1,19 @@
-import { createClient } from '@/lib/client';
 
-interface Event {
-    name: string;
-}
+import { getEvents } from "@/lib/events";
+import EventsGallery from "@/components/events/EventsGallery";
 
-export default async function Home() {
-    const supabase = createClient();
-
-    const { data, error } = await supabase
-        .from("tblevents")
-        .select("*")
-        .eq("event_id", 2);
-
-    if (error) {
-        return <p>Error Loading: {error.message}</p>;
-    }
+export default async function Homepage() {
+    const events = await getEvents();
 
     return (
-        <div>
-            <h1>Events</h1>
-            <ul>
-                {data?.map((event, index) => (
-                    <li key={index}>
-                        {event.name} — {event.event_date} - {event.created_by}
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
+        <main>
+            <section className="container mx-auto px-6 py-12">
+                <h1 className="mb-8 text-3xl font-bold">
+                    Our Events
+                </h1>
 
+                <EventsGallery events={events} />
+            </section>
+        </main>
+    );
 }

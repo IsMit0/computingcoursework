@@ -1,12 +1,15 @@
-import { createClient as createSupabaseClient } from '@supabase/supabase-js';
+
+import { createBrowserClient } from "@supabase/ssr";
 
 export function createClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
-    throw new Error('Supabase URL or Key is missing. Check your .env.local file.');
+    throw new Error(
+      "Supabase URL or Key is missing. Check your .env.local file."
+    );
   }
 
-  return createSupabaseClient(supabaseUrl, supabaseKey);
+  return createBrowserClient(supabaseUrl, supabaseKey);
 }
