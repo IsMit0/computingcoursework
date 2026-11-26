@@ -131,6 +131,12 @@ export async function getPost(postId: number, eventId: number) {
                 storage_path,
                 caption,
                 sort_order
+            ),
+            tblevents (
+                event_id,
+                name,
+                event_date,
+                description
             )
         `,
     )
@@ -143,6 +149,10 @@ export async function getPost(postId: number, eventId: number) {
     return null;
   }
 
+  const event = Array.isArray(data.tblevents)
+    ? data.tblevents[0]
+    : data.tblevents;
+
   return {
     ...data,
     images: (data.tblevent_images ?? [])
@@ -151,6 +161,12 @@ export async function getPost(postId: number, eventId: number) {
         ...image,
         url: supabase.storage.from("images").getPublicUrl(image.storage_path)
           .data.publicUrl,
+        post: {
+          post_id: data.post_id,
+          title: data.title,
+          body: data.body,
+        },
+        event,
       })),
   };
 }

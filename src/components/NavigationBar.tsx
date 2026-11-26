@@ -70,7 +70,7 @@ export default function NavigationBar() {
       window.removeEventListener("scroll", updateActiveSection);
       window.removeEventListener("resize", updateActiveSection);
     };
-  }, [pathname, isEventsPage]);
+  }, [pathname]); // CHANGED: removed isEventsPage
 
   useEffect(() => {
     const updateIndicator = () => {
