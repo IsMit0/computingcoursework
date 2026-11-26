@@ -22,7 +22,7 @@ export default async function Home() {
             <ul>
                 {data?.map((event, index) => (
                     <li key={index}>
-                        {event.name} — {event.event_date}
+                        {event.name} — {event.event_date} - {event.created_by}
                     </li>
                 ))}
             </ul>
