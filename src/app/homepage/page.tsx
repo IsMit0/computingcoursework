@@ -5,7 +5,10 @@ import EventsGallery from "@/components/events/EventsGallery";
 
 export default async function Homepage() {
   const images = await getGalleryImages();
-  const heroImage = images[0];
+  const heroImage =
+    images.length > 0
+      ? images[Math.floor(Math.random() * images.length)]
+      : null;
 
   return (
     <div className="space-y-12">

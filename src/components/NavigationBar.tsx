@@ -108,6 +108,17 @@ export default function NavigationBar() {
         {/* Branding */}
         <Link
           href="/homepage"
+          onClick={(event) => {
+            if (pathname === "/homepage") {
+              event.preventDefault();
+              window.history.replaceState(
+                window.history.state,
+                "",
+                "/homepage",
+              );
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          }}
           className="flex w-fit items-center gap-2 transition-opacity hover:opacity-80 sm:gap-3"
         >
           <Image
