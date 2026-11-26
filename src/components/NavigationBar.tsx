@@ -15,6 +15,7 @@ import {
 const navigationLinks = [
   { label: "Home", href: "/homepage", section: "home" },
   { label: "Gallery", href: "/homepage#gallery", section: "gallery" },
+  { label: "Events", href: "/events", section: "events" },
 ];
 
 export default function NavigationBar() {
@@ -24,9 +25,11 @@ export default function NavigationBar() {
 
   const navbarRef = useRef<HTMLDivElement>(null);
 
+  const isEventsPage = pathname.startsWith("/events");
+
   useEffect(() => {
     if (pathname !== "/homepage") {
-      setActiveSection("");
+      setActiveSection(isEventsPage ? "events" : "");
       return;
     }
 
@@ -67,7 +70,7 @@ export default function NavigationBar() {
       window.removeEventListener("scroll", updateActiveSection);
       window.removeEventListener("resize", updateActiveSection);
     };
-  }, [pathname]);
+  }, [pathname, isEventsPage]);
 
   useEffect(() => {
     const updateIndicator = () => {
@@ -76,7 +79,7 @@ export default function NavigationBar() {
         `[data-section="${activeSection}"]`,
       );
 
-      if (!navbar || !activeLink || pathname !== "/homepage") {
+      if (!navbar || !activeLink) {
         setIndicator({ left: 0, width: 0 });
         return;
       }
@@ -155,7 +158,7 @@ export default function NavigationBar() {
         <div className="hidden sm:block" />
 
         {/* Moving indicator */}
-        {pathname === "/homepage" && indicator.width > 0 && (
+        {indicator.width > 0 && (
           <div
             className="pointer-events-none absolute bottom-0 h-[3px] rounded-full bg-secondary transition-all duration-300"
             style={{

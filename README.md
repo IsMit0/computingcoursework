@@ -66,3 +66,6 @@
 - [ ] Ready for release
 
 credit to chatgpt for formatting
+
+NOTES:
+Made an edit to the database -> ADDED COVER IMAGE ID, FOREIGN RELATION TO IMAGE_ID
