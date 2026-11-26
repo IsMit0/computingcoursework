@@ -12,12 +12,12 @@
 
 ## 2. Events System
 
-- [ ] Create Events overview page
-- [ ] Display events using modern cards
-- [ ] Separate upcoming and past events
-- [ ] Create individual event pages
-- [ ] Display event posts and highlights
-- [ ] Connect event images to the gallery
+- [x] Create Events overview page
+- [x] Display events using modern cards
+- [x] Separate upcoming and past events
+- [x] Create individual event pages
+- [x] Display event posts and highlights
+- [x] Connect event images to the gallery
 
 ## 3. Authentication
 
